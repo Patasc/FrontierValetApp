@@ -16,6 +16,7 @@ export default class ShipCreationForm extends Component{
             shipCallsign: "",
             shipCaptain: "",
             shipDockTime: '',
+            threat: "green",
         }
     }
 
@@ -42,6 +43,9 @@ export default class ShipCreationForm extends Component{
             shipList = JSON.parse(shipList);
         }
 
+        let randomNumber = (Math.floor(Math.random() * (999999999 - 111111111 + 1) + 111111111)).toString();
+        this.state.id = randomNumber;
+
         shipList.push(this.state);
 
         localStorage.setItem("shipList", JSON.stringify(shipList));
@@ -54,12 +58,16 @@ export default class ShipCreationForm extends Component{
             shipCaptain: "",
             shipDockTime: "",
             threat: "green",
+            docked: false,
         })
+
+        window.dispatchEvent(new Event("storage"));
+
     }
 
     render(){
         return(
-            <div className={"form-container"}>
+            <div className={"form-container"} style={{paddingBottom: "20px"}}>
                 <form onSubmit={this.onFormSubmit} style={{width: "80%", display: "inline-block"}}>
                     <div style={{overflow: "hidden"}}>
                         <div className="form-group" style={{float: "left", width: "33%"}}>
