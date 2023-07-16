@@ -48,3 +48,13 @@ div {
 .halfHeight {
   height: 50%;
 }
+
+.smallCell {
+  width: 8%;
+}
+
+table {
+  width: 100%;
+  table-layout: auto;
+  align-content: center;
+}
