@@ -16,7 +16,9 @@ export default class ShipCreationForm extends Component{
             shipCallsign: "",
             shipCaptain: "",
             shipDockTime: '',
-            threat: "green",
+            threat: "Green",
+            docked: false,
+            unpaidFines: 0,
         }
     }
 
@@ -46,6 +48,15 @@ export default class ShipCreationForm extends Component{
         let randomNumber = (Math.floor(Math.random() * (999999999 - 111111111 + 1) + 111111111)).toString();
         this.state.id = randomNumber;
 
+        if (this.state.shipDockTime === ''){
+            this.state.shipDockTime = new Date();
+        }
+
+        else {
+            this.state.shipDockTime = new Date((new Date()).toDateString() + ' ' + this.state.shipDockTime);
+            this.state.docked = true;
+        }
+
         shipList.push(this.state);
 
         localStorage.setItem("shipList", JSON.stringify(shipList));
@@ -57,8 +68,9 @@ export default class ShipCreationForm extends Component{
             shipCallsign: "",
             shipCaptain: "",
             shipDockTime: "",
-            threat: "green",
+            threat: "Green",
             docked: false,
+            unpaidFines: 0,
         })
 
         window.dispatchEvent(new Event("storage"));
@@ -67,18 +79,18 @@ export default class ShipCreationForm extends Component{
 
     render(){
         return(
-            <div className={"form-container"} style={{paddingBottom: "20px"}}>
+            <div className={"form-container"} style={{paddingBottom: "20px", borderBottom: "1px solid black"}}>
                 <form onSubmit={this.onFormSubmit} style={{width: "80%", display: "inline-block"}}>
-                    <div style={{overflow: "hidden"}}>
-                        <div className="form-group" style={{float: "left", width: "33%"}}>
+                    <div style={{overflow: "hidden", display: "inline-block"}}>
+                        <div className="form-group" style={{float: "left"}}>
                             <label>Ship Name</label>
                             <input required type="text" className="form-control" value={this.state.shipName} onChange={this.onChangeShipName}/>
                         </div>
-                        <div className="form-group" style={{float: "left", width: "33%"}}>
+                        <div className="form-group" style={{float: "left"}}>
                             <label>Ship Callsign</label>
                             <input required type="text" className="form-control" value={this.state.shipCallsign} onChange={this.onChangeShipCallsign}/>
                         </div>
-                        <div className="form-group" style={{float: "left", width: "33%"}}>
+                        <div className="form-group" style={{float: "left"}}>
                             <label>Ship Captains Name</label>
                             <input type="text"  className="form-control" value={this.state.shipCaptain} onChange={this.onChangeShipCaptain}/>
                         </div>

@@ -37,10 +37,6 @@
   }
 }
 
-div {
-  border: 1px solid black;
-}
-
 .halfWidth {
   width: 50%;
 }
@@ -49,12 +45,25 @@ div {
   height: 50%;
 }
 
-.smallCell {
-  width: 8%;
-}
-
 table {
   width: 100%;
   table-layout: auto;
   align-content: center;
+}
+
+.toFine{
+  color: red;
+}
+
+.toFineSoon{
+  color: green;
+}
+
+.blue{
+  font-weight: bold;
+}
+
+.red{
+  background-color: pink;
+  font-weight: bold;
 }

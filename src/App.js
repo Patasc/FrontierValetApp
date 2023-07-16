@@ -9,16 +9,16 @@ import ShipsDisplay from "./Components/ShipsDisplay";
 function App() {
   return (
     <div className="App">
-        <div  style={{overflow: "hidden"}}>
-            <div className={"halfWidth"} style={{float: "left"}}>
+        <div  style={{overflow: "hidden", border: "1px solid black"}}>
+            <div className={"halfWidth"} style={{float: "left", border: "1px solid black"}}>
                 <ShipCreationForm />
                 <FinesForm />
             </div>
-            <div className={"halfWidth"} style={{float: "left"}}>
+            <div className={"halfWidth"} style={{float: "left", border: "1px solid black"}}>
                 <FinableDisplay />
             </div>
         </div>
-        <div>
+        <div style={{border: "1px solid black"}}>
             <ShipsDisplay />
         </div>
     </div>

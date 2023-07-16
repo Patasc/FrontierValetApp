@@ -31,15 +31,9 @@ export default class ShipsDisplay extends Component{
         this.setState({ships: shipList});
     }
 
-    getShipDocktime(ship){
-        if (ship.shipDockTime === ""){
-            return "N/A";
-        }
-
-        return ship.shipDockTime;
-    }
-
     getFormattedTime(timeObject){
+        timeObject = new Date(timeObject);
+
         let hour = timeObject.getHours();
         let minutes = timeObject.getMinutes();
 
@@ -71,7 +65,7 @@ export default class ShipsDisplay extends Component{
         for (let i in shipList){
             if (shipList[i].id === id){
                 if (dockStatus === "docked") {
-                    shipList[i].shipDockTime = this.getFormattedTime(new Date());
+                    shipList[i].shipDockTime = new Date();
                 }
 
                 shipList[i].docked = (dockStatus === "docked");
@@ -98,6 +92,21 @@ export default class ShipsDisplay extends Component{
         window.dispatchEvent(new Event("storage"));
     }
 
+    onFineRemoval(id){
+        let shipList = this.state.ships;
+
+        for (let i in shipList){
+            if (shipList[i].id === id){
+                shipList[i].unpaidFines = 0;
+
+                localStorage.setItem("shipList", JSON.stringify(shipList));
+                window.dispatchEvent(new Event("storage"));
+
+                return;
+            }
+        }
+    }
+
     render(){
         return(
             <div>
@@ -108,9 +117,11 @@ export default class ShipsDisplay extends Component{
                         <th>Ship Captain</th>
                         <th>Posed Threat</th>
                         <th>Last Docked</th>
+                        <th>Unpaid Fines</th>
 
                         <th>Dock Status</th>
                         <th>Edit threat level</th>
+                        <th>Remove Fines</th>
                         <th>Remove ship</th>
                     </tr>
 
@@ -118,13 +129,14 @@ export default class ShipsDisplay extends Component{
                         this.state.ships.map((ship) => {
                             return (
                                 <tr>
-                                    <td className="smallCell">{ship.shipName}</td>
-                                    <td className="smallCell">{ship.shipCallsign}</td>
-                                    <td className="smallCell">{ship.shipCaptain}</td>
-                                    <td className="smallCell">{ship.threat}</td>
-                                    <td className="smallCell">{this.getShipDocktime(ship)}</td>
+                                    <td>{ship.shipName}</td>
+                                    <td>{ship.shipCallsign}</td>
+                                    <td>{ship.shipCaptain}</td>
+                                    <td>{ship.threat}</td>
+                                    <td>{this.getFormattedTime(ship.shipDockTime)}</td>
+                                    <td>{ship.unpaidFines}</td>
 
-                                    <td className="smallCell">
+                                    <td>
                                         <div>
                                             <button className="halfWidth" onClick={event => this.onDockStatusChange(ship.id, "docked")}>Dock</button>
                                         </div>
@@ -134,7 +146,7 @@ export default class ShipsDisplay extends Component{
                                         </div>
                                     </td>
 
-                                    <td className="smallCell">
+                                    <td>
                                         <div style={{overflow: "hidden"}}>
                                             <div className={"halfWidth"} style={{float: "left"}}><label>Green</label></div>
                                             <div className={"halfWidth"} style={{float: "left"}}><input name="threat" type='radio' onInput={event => this.onThreatChange(ship.id, "Green")}/></div>
@@ -148,6 +160,11 @@ export default class ShipsDisplay extends Component{
                                         <div style={{overflow: "hidden"}}>
                                             <div className={"halfWidth"} style={{float: "left"}}><label>Red</label></div>
                                             <div className={"halfWidth"} style={{float: "left"}}><input name="threat" type='radio' onInput={event => this.onThreatChange(ship.id, "Red")}/></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <button className="halfWidth" onClick={event => this.onFineRemoval(ship.id)}>Remove Outstanding Fines</button>
                                         </div>
                                     </td>
                                     <td>
