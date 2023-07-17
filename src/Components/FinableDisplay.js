@@ -5,7 +5,7 @@ export default class FinableDisplay extends Component{
         super(props);
 
         let shipList = localStorage.getItem("shipList") || [];
-        let fineRate = JSON.parse(localStorage.getItem("fine"));
+        let fineRate = JSON.parse(localStorage.getItem("fine")) || {baseFine: 0, minimumFine: 0, fineIncrement: 0, fineInterval: 0, maxDockTime: 10,};
 
         // I can't just call this.updateShipList, darn optimisations !
         if (typeof(shipList) === 'string'){
@@ -34,7 +34,7 @@ export default class FinableDisplay extends Component{
     }
 
     updateFineAmount(){
-        let fineRate = JSON.parse(localStorage.getItem("fine"));
+        let fineRate = JSON.parse(localStorage.getItem("fine")) || {baseFine: 0, minimumFine: 0, fineIncrement: 0, fineInterval: 0, maxDockTime: 10,};
         this.setState({fine: fineRate});
     }
 
