@@ -19,6 +19,7 @@ export default class ShipCreationForm extends Component{
             threat: "Green",
             docked: false,
             unpaidFines: 0,
+            lastLevel: 0
         }
     }
 
@@ -71,6 +72,7 @@ export default class ShipCreationForm extends Component{
             threat: "Green",
             docked: false,
             unpaidFines: 0,
+            lastLevel: 0
         })
 
         window.dispatchEvent(new Event("storage"));

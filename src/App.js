@@ -9,6 +9,7 @@ import ShipsDisplay from "./Components/ShipsDisplay";
 function App() {
   return (
     <div className="App">
+        <audio id="audio">What the</audio>
         <div  style={{overflow: "hidden", border: "1px solid black"}}>
             <div className={"halfWidth"} style={{float: "left", border: "1px solid black"}}>
                 <ShipCreationForm />

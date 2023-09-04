@@ -28,6 +28,8 @@ In the top left hand corner are two forms,
 - the top one is to input a new ship into the system,
   - The captains name is optional and can be added later, it merely exists to help know who to fine
   - Ship dock timer is also optional, just in case a ship has already been docked for a bit when inputting into the system, so that they aren't given 'free time'
+
+
 - The form below allows to input how a fine is calculated, so that you don't have to do the math yourself.
   - Base fine : Static number for the fine, to which incremental fines can be added
   - Minimum fine : Guarantees a minimum (For exemple, 1K/min overstayed with minimum of 5k)
@@ -35,6 +37,8 @@ In the top left hand corner are two forms,
   - How often the fine increments (In minutes)
 
   - How long ships may dock for before being fined
+
+  - A file selector to pick an audio file which will play when a ship has overdocked (Must be selected again on reload due to security restrictions)
 
 ---
 

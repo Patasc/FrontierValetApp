@@ -1,8 +1,11 @@
 import React, {Component} from "react";
 
 export default class FinableDisplay extends Component{
+
     constructor(props) {
         super(props);
+
+        window.dispatchEvent(new Event('playAudio'));
 
         let shipList = localStorage.getItem("shipList") || [];
         let fineRate = JSON.parse(localStorage.getItem("fine")) || {baseFine: 0, minimumFine: 0, fineIncrement: 0, fineInterval: 0, maxDockTime: 10,};
@@ -88,6 +91,7 @@ export default class FinableDisplay extends Component{
 
                 shipList[i].unpaidFines += this.getFineAmount(shipList[i]);
                 shipList[i].docked = false;
+                shipList[i].lastLevel = 0;
 
                 localStorage.setItem("shipList", JSON.stringify(shipList));
                 window.dispatchEvent(new Event("storage"));
@@ -113,10 +117,22 @@ export default class FinableDisplay extends Component{
 
         if (secondsStayed > (this.state.fine.maxDockTime * 60)){
             classes += " toFine";
+
+            if (ship.lastLevel !== 2){
+                ship.lastLevel = 2;
+                window.dispatchEvent(new Event("playAudio"));
+
+                // Don't fire off event to avoid possible edge case weirdness ? Plus is an 'internal' value to this component
+                localStorage.setItem("shipList", JSON.stringify(this.state.shipList));
+            }
         }
 
         else if (secondsStayed > (this.state.fine.maxDockTime * 60) / 2){
             classes += " toFineSoon";
+
+            if (ship.lastLevel === 0){
+                ship.lastLevel = 1;
+            }
         }
 
         return classes;
@@ -144,24 +160,24 @@ export default class FinableDisplay extends Component{
                         <th>Fine amount</th>
                         <th>Undock</th>
                     </tr>
-                {
-                    this.getDockedShipsOrderedByStayTime().map((ship) => {
-                        return (
-                            <tr className={this.applyStyle(ship)}>
-                                <td>{Math.floor(this.getShipDockTimer(ship) / 60)}:{this.maybePadNumber(this.getShipDockTimer(ship) % 60)}</td>
-                                <td>{ship.shipName}</td>
-                                <td>{ship.shipCallsign}</td>
-                                <td>{ship.shipCaptain}</td>
-                                <td>{this.getFineAmount(ship)}</td>
-                                <td>
-                                    <div>
-                                        <button style={{width: "80%"}} className="halfWidth" onClick={event => this.onShipUndock(ship.id)}>Undock</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        )
-                    })
-                }
+                    {
+                        this.getDockedShipsOrderedByStayTime().map((ship) => {
+                            return (
+                                <tr className={this.applyStyle(ship)}>
+                                    <td>{Math.floor(this.getShipDockTimer(ship) / 60)}:{this.maybePadNumber(this.getShipDockTimer(ship) % 60)}</td>
+                                    <td>{ship.shipName}</td>
+                                    <td>{ship.shipCallsign}</td>
+                                    <td>{ship.shipCaptain}</td>
+                                    <td>{this.getFineAmount(ship)}</td>
+                                    <td>
+                                        <div>
+                                            <button style={{width: "80%"}} className="halfWidth" onClick={event => this.onShipUndock(ship.id)}>Undock</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )
+                        })
+                    }
                 </table>
             </div>
         )

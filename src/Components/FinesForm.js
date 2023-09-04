@@ -1,6 +1,17 @@
 import React, {Component} from "react";
 
 export default class FinesForm extends Component{
+
+    playAudio(){
+        let audio = document.getElementById("audio");
+
+        if (audio === null || audio.src === undefined){
+            console.log("!!!");
+            return;
+        }
+
+        audio.play();
+    }
     constructor(props) {
         super(props);
 
@@ -11,6 +22,11 @@ export default class FinesForm extends Component{
         this.onFineIncrementChange = this.onFineIncrementChange.bind(this);
         this.onFineIntervalChange = this.onFineIntervalChange.bind(this);
         this.onTimeChange = this.onTimeChange.bind(this);
+        this.onAudioFileSelected = this.onAudioFileSelected.bind(this);
+
+        window.addEventListener("playAudio", () => {
+            this.playAudio();
+        })
 
         this.state = {
             baseFine: 0,
@@ -19,6 +35,12 @@ export default class FinesForm extends Component{
             fineInterval: 0,
             maxDockTime: 10,
         }
+    }
+
+    onAudioFileSelected(e){
+        let aud = document.getElementById("audio");
+        aud.src = URL.createObjectURL(e.target.files[0]);
+        aud.load();
     }
 
     onBaseFineChange(e){
@@ -84,6 +106,14 @@ export default class FinesForm extends Component{
                     <div className="form-group">
                         <button type="submit" className="btn btn-primary btn-block" onSubmit={this.onFormSubmit}>Submit</button>
                     </div>
+
+                    <br/>
+
+                    <div>
+                        <input id="audioSelector" type="file" accept={"audio/*"} onChange={this.onAudioFileSelected}/>
+                    </div>
+
+                    <br/>
                 </form>
             </div>
         )
